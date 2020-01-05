@@ -5,10 +5,12 @@ module.exports = function(req, res) {
 
     const user = new libUser.User();
 
-    user.isLogged('boussad', 'monjoliemotdepasse', function(errConnexion, resConnexion){
+    var cookie = 'test1';
+
+    user.isLogged(cookie, (status) => {
 
         res.render('index/index.twig', {
-            connected: resConnexion
+            connected: status
         })
 
     });
