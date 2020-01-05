@@ -1,13 +1,11 @@
 const LibMysql = require('../mysql.js');
-const libUser = require('../../dist/User');
+const libUser = require('../ts/User');
 
 module.exports = function(req, res) {
 
     const user = new libUser.User();
 
-    user.isLogged(function(errCompare, resCompare){
-
-        console.log(resCompare);
+    user.isLogged('boussad', 'monjoliemotdepasse', function(errCompare, resCompare){
 
         if(resCompare){
             res.setHeader('Content-Type', 'text/plain');
