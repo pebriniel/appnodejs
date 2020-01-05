@@ -6,13 +6,13 @@ export class User {
     private _status:number = 1;
     private _password;
 
-    isLogged(callback) {
+    isLogged(username, password, callback) {
         let mysql = LibMysql.mysql;
         let pool = LibMysql.pool;
 
         let sql_template = "Select login, password from ?? where login = ? ";
 
-        let replaces = ['utilisateurs', 'boussad'];
+        let replaces = ['utilisateurs', username];
         let sql = mysql.format(sql_template, replaces);
 
         pool.getConnection(function(err, connection) {
@@ -23,8 +23,7 @@ export class User {
 
                 if (err) throw err;
 
-                this.compare('monmotdepasse', rows[0].password, callback)
-
+                bcrypt.compare(password, rows[0].password, callback);
 
             });
         });
