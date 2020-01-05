@@ -7,11 +7,10 @@ module.exports = function(req, res) {
 
     user.isLogged('boussad', 'monjoliemotdepasse', function(errConnexion, resConnexion){
 
-        res.render('index.twig', {
+        res.render('index/index.twig', {
             connected: resConnexion
         })
 
     });
-
 
 };

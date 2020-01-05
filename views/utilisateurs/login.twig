@@ -1,0 +1,13 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+    {% if connected is defined and connected %}
+        vous êtes connecté
+    {% else %}
+        <form method="post">
+            <input type="text" name="username" />
+            <input type="password" name="password" />
+            <input type="submit" />
+        </form>
+    {% endif %}
+{% endblock %}

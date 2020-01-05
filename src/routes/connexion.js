@@ -5,18 +5,30 @@ module.exports = function(req, res) {
 
     const user = new libUser.User();
 
-    user.isLogged('boussad', 'monjoliemotdepasse', function(errCompare, resCompare){
+    var username = (req.body.username) ? req.body.username : null;
+    var password = (req.body.password) ? req.body.password : null;
 
-        if(resCompare){
-            res.setHeader('Content-Type', 'text/plain');
-            res.send('Vous êtes à l\'accueil');
+    var cookie = 'test1';
+
+    user.isLogged(cookie, (status) => {
+
+        if(status == 0){
+            user.CheckIdentifiant(username, password, function(errConnexion, resConnexion){
+
+                res.render('utilisateurs/login.twig', {
+                    connected: resConnexion
+                })
+
+            });
+
         }
         else{
-            res.setHeader('Content-Type', 'text/plain');
-            res.send('Vous n\'êtes pas connecté');
+
+            res.render('utilisateurs/login.twig', {
+                connected: true
+            })
         }
 
     });
-
 
 };
