@@ -5,16 +5,11 @@ module.exports = function(req, res) {
 
     const user = new libUser.User();
 
-    user.isLogged('boussad', 'monjoliemotdepasse', function(errCompare, resCompare){
+    user.isLogged('boussad', 'monjoliemotdepasse', function(errConnexion, resConnexion){
 
-        if(resCompare){
-            res.setHeader('Content-Type', 'text/plain');
-            res.send('Vous êtes à l\'accueil');
-        }
-        else{
-            res.setHeader('Content-Type', 'text/plain');
-            res.send('Vous n\'êtes pas connecté');
-        }
+        res.render('index.twig', {
+            connected: resConnexion
+        })
 
     });
 
