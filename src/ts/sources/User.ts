@@ -1,7 +1,9 @@
 import bcrypt = require('bcrypt');
 import LibMysql = require('../mysql.js');
+var uniqid = require('uniqid');
 
 export class User {
+    private _id:number = null;
     private _login:string = 'anonymous';
     private _status:number = 0;
     private _password;
@@ -24,6 +26,7 @@ export class User {
             connection.query(sql, function(err, rows, fields) {
 
                 if(rows.length){
+                    _this._id = rows[0].id;
                     _this._login = rows[0].login;
                     _this._status = rows[0].status;
                 }
@@ -61,8 +64,8 @@ export class User {
         });
     }
 
-    setCookie(saltCookie) {
-
+    setCookie() {
+        console.log(this.id);
     }
 
     setPassword(myPlaintextPassword: string) {

@@ -8,12 +8,16 @@ module.exports = function(req, res) {
     var username = (req.body.username) ? req.body.username : null;
     var password = (req.body.password) ? req.body.password : null;
 
+
+
     var cookie = 'test1';
 
     user.isLogged(cookie, (status) => {
 
         if(status == 0){
             user.CheckIdentifiant(username, password, function(errConnexion, resConnexion){
+
+                user.setCookie();
 
                 res.render('utilisateurs/login.twig', {
                     connected: resConnexion
