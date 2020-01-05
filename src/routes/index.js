@@ -9,6 +9,10 @@ module.exports = function(req, res) {
 
     user.isLogged(cookie, (status) => {
 
+        if(!status){
+            return res.redirect('/login');
+        }
+
         res.render('index/index.twig', {
             connected: status
         })
