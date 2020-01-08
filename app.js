@@ -27,7 +27,11 @@ app.get('/', function(req, res){
 // });
 
 app.all('/login', function(req, res){
-    new connexionRoute().exec(req, res);
+    new connexionRoute().login(req, res);
+});
+
+app.get('/logout', function(req, res){
+    new connexionRoute().logout(req, res);
 });
 
 

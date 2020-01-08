@@ -3,7 +3,7 @@ const uniqid = require('uniqid');
 
 class ConnexionController extends Controller{
 
-    exec(req, res) {
+    login(req, res) {
 
         this._req = req;
         this._res = res;
@@ -35,7 +35,7 @@ class ConnexionController extends Controller{
                         this.user.setCookie(_uniqid);
                         this._res.cookie("userSession", _uniqid);
 
-                        return this._res.redirect('/')
+                        return this._res.redirect('/');
                     }
 
                     this._res.render('utilisateurs/login.twig', {
@@ -44,6 +44,12 @@ class ConnexionController extends Controller{
                 });
             }
         });
+    }
+
+    logout(req, res) {
+        res.cookie("userSession", '');
+
+        return res.redirect('/');
     }
 
 }

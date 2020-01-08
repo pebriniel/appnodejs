@@ -3,6 +3,13 @@
         <link rel='stylesheet' id='twentyseventeen-style-css'  href='static/css/app.css' type='text/css' media='all' />
     </head>
     <body>
+        <header>
+
+            {% if connected is defined and connected %}
+                <a href="/logout">deconnexion</a>
+            {% endif %}
+        </header>
         {% block content %}{% endblock %}
+
     </body>
 </html>
