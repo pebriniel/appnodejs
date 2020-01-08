@@ -1,22 +1,33 @@
-const LibMysql = require('../mysql.js');
-const libUser = require('../ts/User');
+const Controller = require('../controller.js');
 
-module.exports = function(req, res) {
+class IndexController extends Controller{
 
-    const user = new libUser.User();
+    exec(req, res) {
 
-    var cookie = 'test1';
+        this._req = req;
+        this._res = res;
 
-    user.isLogged(cookie, (status) => {
+        var username = (req.body.username) ? req.body.username : null;
+        var password = (req.body.password) ? req.body.password : null;
 
-        if(!status){
-            return res.redirect('/login');
-        }
+        var cookie = (this._req.cookies['userSession']) ? this._req.cookies['userSession'] : 'empty';
 
-        res.render('index/index.twig', {
-            connected: status
+        this.init();
+
+        this.user.isConnected(cookie)
+        .then((status) => {
+            if(!status){
+
+                return this._res.redirect('/login');
+
+            }
+
+            this._res.render('index/index.twig', {
+                connected: status
+            })
         })
 
-    });
+    }
+}
 
-};
+module.exports = IndexController;

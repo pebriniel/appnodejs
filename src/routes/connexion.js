@@ -1,38 +1,51 @@
-const LibMysql = require('../mysql.js');
-const libUser = require('../ts/User');
+const Controller = require('../controller.js');
+const uniqid = require('uniqid');
 
-module.exports = function(req, res) {
+class ConnexionController extends Controller{
 
-    const user = new libUser.User();
+    exec(req, res) {
 
-    var username = (req.body.username) ? req.body.username : null;
-    var password = (req.body.password) ? req.body.password : null;
+        this._req = req;
+        this._res = res;
 
+        var username = (req.body.username) ? req.body.username : '';
+        var password = (req.body.password) ? req.body.password : '';
 
+        var cookie = (this._req.cookies['userSession']) ? this._req.cookies['userSession'] : 'empty';
 
-    var cookie = 'test1';
+        this.init();
 
-    user.isLogged(cookie, (status) => {
-
-        if(status == 0){
-            user.CheckIdentifiant(username, password, function(errConnexion, resConnexion){
-
-                user.setCookie();
-
-                res.render('utilisateurs/login.twig', {
-                    connected: resConnexion
+        this.user.isConnected(cookie)
+        .then((status) => {
+            if(status){
+                return this._res.redirect('/')
+            }
+            else if(username == '' && password == ''){
+                this._res.render('utilisateurs/login.twig', {
+                    connected: false
                 })
+            }
+            else{
+                this.user.checkLogin(username, password)
+                .then((data) => {
+                    if(data){
 
-            });
+                        let _uniqid = uniqid();
 
-        }
-        else{
+                        this.user.setCookie(_uniqid);
+                        this._res.cookie("userSession", _uniqid);
 
-            res.render('utilisateurs/login.twig', {
-                connected: true
-            })
-        }
+                        return this._res.redirect('/')
+                    }
 
-    });
+                    this._res.render('utilisateurs/login.twig', {
+                        connected: data
+                    })
+                });
+            }
+        });
+    }
 
-};
+}
+
+module.exports = ConnexionController;

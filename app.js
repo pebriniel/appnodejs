@@ -18,9 +18,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/static', express.static(__dirname + '/public'));
 
-app.get('/', indexRoute);
+app.get('/', function(req, res){
+    new indexRoute().exec(req, res);
+});
 
-app.get('/login', connexionRoute);
-app.all('/login', connexionRoute);
+// app.get('/login', function(req, res){
+//     new connexionRoute().exec(req, res);
+// });
+
+app.all('/login', function(req, res){
+    new connexionRoute().exec(req, res);
+});
+
 
 app.listen(8000);
