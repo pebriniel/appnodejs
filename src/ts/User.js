@@ -21,7 +21,6 @@ class User {
             let sql = mysqlConnexion.mysql.format(sql_template, replaces);
 
             return mysqlConnexion.queryOne(connection, sql);
-
         })
 
     }
@@ -42,8 +41,14 @@ class User {
     }
 
     checkPassword(password, row){
-        return bcrypt.compare(password, row.password).then((result) => {
-            return row.status;
+        return new Promise(function (resolve, reject) {
+            bcrypt.compare(password, row.password).then((result) => {
+                if(result){
+                    resolve(result);
+                }
+
+                reject(false);
+            });
         });
     }
 
@@ -65,24 +70,71 @@ class User {
 
             return mysqlConnexion.upload(connection, sql);
         });
+
     }
 
-    loadUser(data){
-        this._id = data.id;
-        this._login = data.login;
-        this._status = data.status;
+    loadUser(id){
+
+        var mysqlConnexion = new LibMysql();
+
+        let mysql = LibMysql.mysql;
+        let pool = LibMysql.pool;
+
+        return mysqlConnexion.start()
+        //Chargement de l'utilisateur sélectionné
+        .then((connection) => {
+
+            let sql_template = "SELECT id, login, email, status FROM utilisateurs WHERE id = ?";
+
+            let replaces = [id];
+            let sql = mysqlConnexion.mysql.format(sql_template, replaces);
+
+            return mysqlConnexion.queryOne(connection, sql);
+        });
+
     }
 
+    liste(){
+
+        var mysqlConnexion = new LibMysql();
+
+        let mysql = LibMysql.mysql;
+        let pool = LibMysql.pool;
+
+        return mysqlConnexion.start()
+        //Chargement de l'utilisateur sélectionné
+        .then((connection) => {
+
+            let sql = "SELECT id, login, email, status FROM utilisateurs";
+
+            return mysqlConnexion.queryAll(connection, sql);
+        });
+
+    }
 
     checkLogin(username, password){
         return this.checkUsername(username)
-        .then((data) => {
-            if(this.checkPassword(password, data)){
-                this.loadUser(data);
-                return true;
-            }
-            return false;
-        })
+            .then((data) => {
+                this.data = data;
+                if(data){
+                    return this.checkPassword(password, data)
+                }
+                else{
+                    return -2;
+                }
+            })
+            .catch((err) => {
+                return -1;
+            });
+    }
+
+    loadModel(data){
+        if(data == null){
+            data = this.data;
+        }
+        this._id = data.id;
+        this._login = data.login;
+        this._status = data.status;
     }
 }
 exports.User = User;

@@ -27,18 +27,25 @@ class ConnexionController extends Controller{
             else{
                 this.user.checkLogin(username, password)
                 .then((data) => {
-                    if(data){
 
+                    if(data > 0){
+
+                        this.user.loadModel();
                         let _uniqid = uniqid();
 
                         this.user.setCookie(_uniqid);
                         this._res.cookie("userSession", _uniqid);
 
+                        this.view.connected = data;
+
                         return this._res.redirect('/');
                     }
 
-                    this.view.connected = data;
 
+                    return this._res.render('utilisateurs/login.twig', this.view);
+                })
+                .catch((err) => {
+                    this.view.error = err;
                     return this._res.render('utilisateurs/login.twig', this.view);
                 });
             }

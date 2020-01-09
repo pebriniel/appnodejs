@@ -7,6 +7,16 @@
         {% if input_empty is defined and input_empty %}
             Remplissez tous les champs.
         {% endif %}
+
+        {% if error is defined %}
+            {% if error == -1 %}
+                le compte utilisateur n'existe pas
+            {% endif %}
+
+            {% if error == -2 %}
+                le mot de passe est mauvais
+            {% endif %}
+        {% endif %}
         <form method="post">
             <input type="text" name="username" />
             <input type="password" name="password" />
