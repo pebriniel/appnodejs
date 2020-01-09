@@ -44,6 +44,19 @@ class mysqlConnexion
             });
         }
 
+        queryAll(connection, sql)
+        {
+            return new Promise(function (resolve, reject) {
+                connection.query(sql, function(err, rows, fields) {
+                    connection.release();
+
+                    if (err) return reject(err);
+
+                    resolve(rows);
+                });
+            });
+        }
+
         upload(connexion, sql){
             this.queryOne(connexion, sql);
         }

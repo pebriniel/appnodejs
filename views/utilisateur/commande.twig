@@ -1,0 +1,23 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+    {% if commandeUser is defined and commandeUser %}
+        Information du client :
+        {{ commandeUser.login }}<br/>
+        {{ commandeUser.email }}<br/>
+        <br/>
+    {% endif %}
+
+    {% if commande is defined and commande %}
+        la commande fut crée {{ commande.dateCreation|date('d-m-Y') }}
+        <br/>
+        Liste des produits :
+
+    {% else %}
+
+        -- aucune commande n'est disponible --
+
+    {% endif %}
+
+{% endblock %}
