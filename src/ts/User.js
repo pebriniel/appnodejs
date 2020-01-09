@@ -83,10 +83,6 @@ class User {
             }
             return false;
         })
-        //     .then((data)) => {
-        //         console.log(data);
-        // //         return this.checkPassword(password, data);
-        //     })
     }
 }
 exports.User = User;

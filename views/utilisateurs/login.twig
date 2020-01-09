@@ -4,6 +4,9 @@
     {% if connected is defined and connected %}
         vous êtes connecté
     {% else %}
+        {% if input_empty is defined and input_empty %}
+            Remplissez tous les champs.
+        {% endif %}
         <form method="post">
             <input type="text" name="username" />
             <input type="password" name="password" />

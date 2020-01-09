@@ -4,7 +4,9 @@
     </head>
     <body>
         <header>
-
+            {% if user is defined and user %}
+                Bievenue {{ user.login }} 
+            {% endif %}
             {% if connected is defined and connected %}
                 <a href="/logout">deconnexion</a>
             {% endif %}

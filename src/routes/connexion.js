@@ -11,19 +11,18 @@ class ConnexionController extends Controller{
         var username = (req.body.username) ? req.body.username : '';
         var password = (req.body.password) ? req.body.password : '';
 
-        var cookie = (this._req.cookies['userSession']) ? this._req.cookies['userSession'] : 'empty';
-
         this.init();
 
-        this.user.isConnected(cookie)
+        this.isConnected()
         .then((status) => {
             if(status){
                 return this._res.redirect('/')
             }
-            else if(username == '' && password == ''){
-                this._res.render('utilisateurs/login.twig', {
-                    connected: false
-                })
+            else if(username == '' || password == ''){
+                this.view.connected = false;
+                this.view.input_empty = true;
+
+                return this._res.render('utilisateurs/login.twig', this.view);
             }
             else{
                 this.user.checkLogin(username, password)
@@ -38,11 +37,12 @@ class ConnexionController extends Controller{
                         return this._res.redirect('/');
                     }
 
-                    this._res.render('utilisateurs/login.twig', {
-                        connected: data
-                    })
+                    this.view.connected = data;
+
+                    return this._res.render('utilisateurs/login.twig', this.view);
                 });
             }
+
         });
     }
 

@@ -10,20 +10,19 @@ class IndexController extends Controller{
         var username = (req.body.username) ? req.body.username : null;
         var password = (req.body.password) ? req.body.password : null;
 
-        var cookie = (this._req.cookies['userSession']) ? this._req.cookies['userSession'] : 'empty';
-
         this.init();
 
-        this.user.isConnected(cookie)
-        .then((status) => {
-            if(!status){
+        this.isConnected()
+        .then((user) => {
+            if(!user || user.status == 0){
 
                 return this._res.redirect('/login');
 
             }
 
-            this._res.render('index/index.twig', {
-                connected: status
+            return this._res.render('index/index.twig', {
+                connected: user.status,
+                user: user
             })
         })
 

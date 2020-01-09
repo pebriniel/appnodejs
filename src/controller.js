@@ -4,17 +4,17 @@ class Controller{
 
     init(){
         this.user = new libUser.User();
+        this.view = new Object();
     }
 
     failureCallback(erreur) {
       console.error("L'opération a échoué avec le message : " + erreur);
     }
 
-    userConnected(){
-
+    isConnected(){
         var cookie = (this._req.cookies['userSession']) ? this._req.cookies['userSession'] : 'empty';
 
-        return this.user.isLogged(cookie);
+        return this.user.isConnected(cookie);
     }
 }
 
