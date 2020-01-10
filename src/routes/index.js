@@ -7,9 +7,6 @@ class IndexController extends Controller{
         this._req = req;
         this._res = res;
 
-        var username = (req.body.username) ? req.body.username : null;
-        var password = (req.body.password) ? req.body.password : null;
-
         this.init();
 
         this.isConnected()
