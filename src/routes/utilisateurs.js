@@ -17,6 +17,11 @@ class utilisateursController extends Controller{
                 return this._res.redirect('/login');
 
             }
+            else if(user.status < 50){
+
+                return this._res.redirect('/');
+
+            }
 
             this.view.connected = user.status;
             this.view.user = user;
